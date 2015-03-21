@@ -30,7 +30,7 @@ public class Server {
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
         ServerJFrame sjf = new ServerJFrame();
-        sjf.show();
+        //sjf.show();
         ServerSocket serverSocket = new ServerSocket(8888);
         
         Socket socket = serverSocket.accept();

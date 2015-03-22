@@ -30,18 +30,14 @@ public class Server {
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
         ServerJFrame sjf = new ServerJFrame();
-        //sjf.show();
-        ServerSocket serverSocket = new ServerSocket(8888);
-        
+        sjf.show();
+        ServerSocket serverSocket = new ServerSocket(8888);      
         Socket socket = serverSocket.accept();
-       
         dataFromClient = new DataInputStream(socket.getInputStream());
         dataToClient = new DataOutputStream(socket.getOutputStream());
         try {
-            //System.out.println(dataFromClient.readUTF());
             while (true) {
                 ServerJFrame.serverMessageArea.append("Client:\n\t"+dataFromClient.readUTF()+'\n');
-                // dataToClient.writeUTF("From Server");
             }
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);

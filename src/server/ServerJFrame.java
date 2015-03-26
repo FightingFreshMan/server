@@ -96,7 +96,7 @@ public class ServerJFrame extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             String smes=server_MessageBox.getText().trim();
-            dataToClient.writeUTF(smes);
+            dataToClient.writeUTF(smes);  
             serverMessageArea.append("Server:\n\t"+smes+'\n');
             server_MessageBox.setText("");
         } catch (IOException ex) {

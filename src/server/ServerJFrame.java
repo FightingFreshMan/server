@@ -8,7 +8,6 @@ package server;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static server.Server.dataToClient;
 
 
 /**
@@ -49,7 +48,7 @@ public class ServerJFrame extends javax.swing.JFrame {
         });
 
         jButton1.setText("发送");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+       jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
@@ -92,16 +91,9 @@ public class ServerJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_server_MessageBoxActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            // TODO add your handling code here:
-            String smes=server_MessageBox.getText().trim();
-            dataToClient.writeUTF(smes);  
-            serverMessageArea.append("Server:\n\t"+smes+'\n');
-            server_MessageBox.setText("");
-        } catch (IOException ex) {
-            Logger.getLogger(ServerJFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {String smes=server_MessageBox.getText().trim();
+    serverMessageArea.append("Server:\n\t"+smes+'\n');
+        server_MessageBox.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

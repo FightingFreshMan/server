@@ -67,6 +67,7 @@ public class Server {
 
             exe.execute(new Client_1To2());
             exe.execute(new Client_2To1());
+            
             /*Runnable task=new SendToServer(socket);
              Thread thread=new Thread(task);
              thread.start();*/
@@ -75,69 +76,73 @@ public class Server {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             //exe.shutdown();
-           // dataFromClient_1.close();
-           // dataToClient_1.close();
-           // dataFromClient_2.close();
-          //  dataToClient_2.close();
-           // client_1.close();
-           // client_2.close();
-           // serverSocket.close();
+            // dataFromClient_1.close();
+            // dataToClient_1.close();
+            // dataFromClient_2.close();
+            //  dataToClient_2.close();
+            // client_1.close();
+            // client_2.close();
+            // serverSocket.close();
         }
 
     }
 
-    private static class Client_1To2 implements Runnable {
-        @Override
+    private static class ExchangeMessage implements Runnable {
+
+        Socket client_1 = null;
+        Socket client_2 = null;
+
+        private ExchangeMessage(Socket c1, Socket c2) {
+            client_1 = c1;
+            client_2 = c2;
+        }
+
         public void run() {
-            while (true) {
-                try {
-                    dataToClient_1.writeUTF(dataFromClient_2.readUTF());
-                    dataToClient_1.writeUTF(null);
-                } catch (IOException ex) {
-                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            try {
+                dataFromClient_1 = new DataInputStream(client_1.getInputStream());
+                dataToClient_1 = new DataOutputStream(client_1.getOutputStream());
+                dataFromClient_2 = new DataInputStream(client_2.getInputStream());
+                dataToClient_2 = new DataOutputStream(client_2.getOutputStream());
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
     }
 
     private static class Client_2To1 implements Runnable {
 
         @Override
         public void run() {
-            while (true) {
-                try {
-                    dataToClient_2.writeUTF(dataFromClient_1.readUTF());
-                    dataToClient_2.writeUTF(null);
-                } catch (IOException ex) {
-                    Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                while (true) {
+                  //  ServerJFrame.serverMessageArea.append("client_2:\t" 
+                 //           + dataFromClient_2.readUTF() + '\n');
+                    dataToClient_1.writeUTF(dataFromClient_2.readUTF());
+                   // dataToClient_1.writeUTF(null);
                 }
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-    /*/实现同时多客户端访问服务器
-     private static class SendToServer implements Runnable {
-     Socket socket = new Socket();
-     //  public static DataInputStream dataFromClient_1 = null;
-     // public static DataOutputStream dataToClient_1 = null;
 
-     public SendToServer(Socket socket) {
-     try {
-     this.socket = socket;
-     dataFromClient = new DataInputStream(socket.getInputStream());
-     dataToClient = new DataOutputStream(socket.getOutputStream());
-     } catch (IOException ex) {
-     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-     }
-     }
+    private static class Client_1To2 implements Runnable {
 
-     public void run() {
-     try {
-     ServerJFrame.serverMessageArea.append("Client:\n\t" + dataFromClient_1.readUTF() + '\n');
+        @Override
+        public void run() {
 
-     } catch (IOException ex) {
-     Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-     }
+            try {
+                while (true) {
+                 //   ServerJFrame.serverMessageArea.append("client_1:\t" 
+                 //           + dataFromClient_1.readUTF() + '\n');
+                    dataToClient_2.writeUTF(dataFromClient_1.readUTF());
+                    //dataToClient_2.writeUTF(null);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-     }
-     }*/
+        }
+    }
 }
